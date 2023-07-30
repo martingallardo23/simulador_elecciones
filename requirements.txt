@@ -8,4 +8,4 @@ django-storages==1.13.2
 user-agents==2.2.0
 ua-parser==0.16.1
 pyyaml==6.0
-psycopg-binary
+psycopg2-binary
