@@ -1,14 +1,14 @@
 {
   "builds": [
     {
-      "src": "vercel_app/wsgi.py",
+      "src": "simulador_elecciones/wsgi.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "vercel_app/wsgi.py"
+      "dest": "simulador_elecciones/wsgi.py"
     }
   ]
 }
