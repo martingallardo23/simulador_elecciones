@@ -292,7 +292,7 @@ function makeGeneralCandidates(parties) {
         .attr("class", "candidate-card-img")
         .attr("id", d => "candidate-card-img-" + d.name)
         .attr("style", "width: 100px; height: 100px;")
-        .attr("src", d => "./static/img/" + d.name + ".jpg");
+        .attr("src", d => "./static/img/" + d.name + ".webp");
 
     enterSelection.append("p")
         .attr("class", "candidate-card-name")
@@ -320,7 +320,7 @@ function makeResultCard(parties, round = "first") {
 
     resultsSection
     .select("#election-results-img")
-    .attr("src", "./static/img/" + first.candidate.name + ".jpg");
+    .attr("src", "./static/img/" + first.candidate.name + ".webp");
 
     resultsSection
     .select("#election-results-text-winner")
@@ -363,7 +363,7 @@ function makeResultCard(parties, round = "first") {
         resultsSection
         .select("#election-results-img-loser")
         .style("display", "block")
-        .attr("src", "./static/img/" + second.candidate.name + ".jpg");
+        .attr("src", "./static/img/" + second.candidate.name + ".webp");
     }
 
 }
