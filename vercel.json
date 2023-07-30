@@ -2,7 +2,7 @@
   "builds": [
     {
       "src": "simulador_elecciones/wsgi.py",
-      "use": "@vercel/python"
+      "use": "@ardnt/vercel-python-wsgi"
     }
   ],
   "routes": [
