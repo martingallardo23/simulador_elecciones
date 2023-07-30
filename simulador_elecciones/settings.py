@@ -78,7 +78,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "simulador_elecciones.wsgi.application"
+WSGI_APPLICATION = "simulador_elecciones.wsgi.app"
 
 
 # Database
