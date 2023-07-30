@@ -1,0 +1,47 @@
+[
+    {
+        "name": "Bullrich",
+        "party": "JxC",
+        "image": "./static/img/Bullrich.png"
+    },
+    {
+        "name": "Larreta",
+        "party": "JxC",
+        "image": "./static/img/larreta.png"
+    },
+    {
+        "name": "Massa",
+        "party": "UP",
+        "image": "./static/img/massa.png"
+    },
+    {
+        "name": "Grabois",
+        "party": "UP",
+        "image": "./static/img/grabois.png"
+    },
+    {
+        "name": "Milei",
+        "party": "LLA",
+        "image": "./static/img/milei.png"
+    },
+    {
+        "name": "Schiaretti",
+        "party": "CF",
+        "image": "./static/img/grabois.png"
+    },
+    {
+        "name": "Bregman",
+        "party": "FIT",
+        "image": "./static/img/grabois.png"
+    },
+    {
+        "name": "Solano",
+        "party": "FIT",
+        "image": "./static/img/grabois.png"
+    },
+    {
+        "name": "Moreno",
+        "party": "PyV",
+        "image": "./static/img/grabois.png"
+    }   
+]

@@ -1,0 +1,32 @@
+[
+    {
+        "name": "JxC",
+        "name_long": "Juntos por el Cambio",
+        "color": "#F5C000"
+    },
+    {
+        "name": "UP",
+        "name_long": "Union por la Patria",
+        "color": "#2EB2AC"
+    },
+    {
+        "name": "LLA",
+        "name_long": "La Libertad Avanza",
+        "color": "#A53860"
+    },
+    {
+        "name": "CF",
+        "name_long": "Consenso Federal",
+        "color": "#618B25"
+    },
+    {
+        "name": "FIT",
+        "name_long": "Frente de Izquierda y de los Trabajadores - Unidad",
+        "color": "#E97149"
+    },
+    {
+        "name": "PyV",
+        "name_long": "Principios y Valores",
+        "color": "#3D5467"
+    }
+]
