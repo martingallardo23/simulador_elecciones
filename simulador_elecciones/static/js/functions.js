@@ -1,14 +1,4 @@
-function hexToRGBA(hex, alpha) {
-    var r = parseInt(hex.slice(1, 3), 16),
-        g = parseInt(hex.slice(3, 5), 16),
-        b = parseInt(hex.slice(5, 7), 16);
 
-    if (alpha) {
-        return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
-    } else {
-        return "rgb(" + r + ", " + g + ", " + b + ")";
-    }
-}
 
 function getTotals (id) {
     let total = 0;
@@ -57,27 +47,27 @@ function checkTotals(id, inputElement) {
     return total;
 }
 
-function getGeneralResult(party, candidates) {
+function updateVotes(candidates, election = "primary") {
+
+    candidates.forEach(candidate => {
+        candidate.votes = 0;
+        let votes = d3.select("#" + election + "-input-" + candidate.name).property("value");
+        candidate.votes = +votes;
+    });
+}
+
+function getVotes(party, candidates, election = "primary") {
     /*
     Calcula los votos para el partido dado
     */
     let votes = 0;
     candidates.forEach(candidate => {
         let primaryVotes = candidate.votes;
-        let retention = d3.select("#primary-retention-" + candidate.name + "-" + party.name).property("value") / 100; 
+        let retention = d3.select("#" + election + "-retention-" + candidate.name + "-" + party.name).property("value") / 100; 
         votes += primaryVotes * retention;
     });
     
     return votes;
-}
-
-function updatePrimaryVotes(candidates) {
-    // actualiza la cantidad de votos por candidato en la primaria
-    candidates.forEach(candidate => {
-        candidate.votes = 0;
-        let votes = d3.select("#primary-input-" + candidate.name).property("value");
-        candidate.votes = +votes;
-    });
 }
 
 function updatePrimaryWinners(parties, candidates) {
@@ -89,7 +79,7 @@ function updatePrimaryWinners(parties, candidates) {
         partyCandidates.sort((a, b) => b.votes - a.votes);
 
         primaryWinners.push(partyCandidates[0]);
-        let general_votes = getGeneralResult(party, candidates);
+        let general_votes = getVotes(party, candidates);
         party.general_votes = general_votes;
         party.candidate = partyCandidates[0];
 
@@ -183,8 +173,8 @@ function updateGeneralResults(parties) {
 }
 
 function updateCandidateNames(parties, candidates) {
+
     primarySection.selectAll(".primary-candidate-name-retention")
-        
         .text(d => {
             let partyCandidates = candidates.filter(candidate => candidate.party === d.name);
             partyCandidates.sort((a, b) => b.votes - a.votes);
@@ -212,7 +202,7 @@ function initializeRetentionRow(candidates, parties, section = "primary") {
         .style("color", d => d.color);
 
         partyCards.append("div")
-        .attr("class", "primary-candidate-name-retention")
+        .attr("class", section + "-candidate-name-retention")
         .text(d => {
                 let partyCandidates = candidates.filter(candidate => candidate.party === d.name);
                 partyCandidates.sort((a, b) => b.votes - a.votes);
@@ -262,7 +252,7 @@ function initializeRetentionRow(candidates, parties, section = "primary") {
             d3.select("#" + section + "-retention-label-" + candidate.name + "-" + party).text(d3.select(this).property("value") + "%");
 
             if (section == "primary") {
-                updatePrimaryVotes(candidates);
+                updateVotes(candidates, "primary");
                 updatePrimaryWinners(parties, candidates);
             }
         });
@@ -384,7 +374,7 @@ function loadData(parties, candidates) {
                     this.value = data[inputId];
                     let id = inputId.split("-")[0] + "-" + inputId.split("-")[1];
                     checkTotals(id, this);
-                    updatePrimaryVotes(candidates);
+                    updateVotes(candidates, "primary");
                     updatePrimaryWinners(parties, candidates);
                     updateCandidateNames(parties, candidates)
 
@@ -392,63 +382,5 @@ function loadData(parties, candidates) {
             }
             })            
             .catch(error => console.error('Error:', error));
-    }
-}
-function openShare() {
-    shareModal.style("display", "flex");
-
-    let data = {};
-
-    allInputs.each(function() {
-        data[this.id] = this.value;
-    });
-
-    resultsData = {
-        "winner": d3.select("#election-results-text-winner").text(),
-        "round": d3.select("#election-results-type-title").text() == "Primera ronda" ? "first" : "second",
-        "percentage": d3.select("#election-results-text-percent").text().replace(/%/g, ""),
-        "loser": d3.select("#election-results-img-loser").attr("src"),
-    }
-
-    let imageURL = `https://vercel-og-nextjs-omega-six.vercel.app/api/simulador?winner=${resultsData.winner}&round=${resultsData.round}&loser=${resultsData.loser}&percentage=${resultsData.percentage}`
-    shareModal.select("#share-modal-img-img").attr("src", imageURL);
-
-    fetch('/save/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            'data': data,
-            'results': resultsData
-        })
-    })
-    .then(response => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error('Failed to save data');
-        }
-    }).then(data => {
-        urlShare.text("simuladorelecciones.com.ar/?id=" + data.id);
-    })
-    .catch(error => console.log(error));
-}
-
-
-
-function closeShare() {
-    shareModal.style("display", "none");
-}
-
-function shareButton() {
-    if (navigator.share) {
-        navigator.share({
-            title: 'Simulador de Elecciones',
-            text: 'Hacé tu predicción de las elecciones 2023',
-            url: 'https://martingallardo23.github.io/simulador-elecciones',
-        })
-            .then(() => console.log('Successful share'))
-            .catch((error) => console.log('Error sharing', error));
     }
 }

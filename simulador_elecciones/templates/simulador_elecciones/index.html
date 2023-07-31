@@ -24,6 +24,7 @@
         <meta name="twitter:image:src" content="{{ image_link }}" />
         <meta http-equiv="Permissions-Policy" content="interest-cohort=()">
         
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js" integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -75,17 +76,13 @@
                 <div id="general-retention-row"></div>
             </div>
         </div>
-        <!--<div id="ballotage-section">
+        <div id="ballotage-section">
             <div class="election-title ballotage-background">Ballotage</div>
             <div id="ballotage-candidates">
                 <div id="ballotage-candidates-title"></div>
                 <div id="ballotage-candidates-row"></div>
             </div>
-            <div id="ballotage-retention" class="row-closed">
-                <div id="ballotage-retention-title"></div>
-                <div id="ballotage-retention-row"></div>
-            </div>
-        </div>        -->
+        </div>
         <div id="election-results" class="election-results">
             <div class="election-results-left">
                 <div class="election-results-title">
@@ -121,7 +118,7 @@
                     <div id="share-modal-img">
                         <img id="share-modal-img-img" src="./static/img/card-template.png">
                     </div>
-                    <div id="share-modal-link" data-toggle="popover" title="Copiado!" onclick="copyToClipboard(event)">
+                    <div id="share-modal-link" tabindex="0" data-toggle="popover" title="Copiado!" onclick="copyToClipboard(event)" data-trigger="focus"  >
                         <div id="url-to-copy">simuladorelecciones.com.ar</div>
                         <div id="share-modal-link-img"></div>
                     </div>
@@ -154,7 +151,8 @@
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js" integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="./static/js/functionsDocument.js"></script>
 <script src="./static/js/functions.js"></script>
 <script src="./static/js/handleRetentionRow.js"></script>
 <script>
@@ -164,8 +162,11 @@
     let primaryCandidatesRow = d3.select("#primary-candidates-row");
     let primarySection = d3.select("#primary-section");
     
-    let generalSection = d3.select("#general-section");
     let generalCandidatesRow = d3.select("#general-candidates-row");
+    let generalSection = d3.select("#general-section");
+    
+    let ballotageCandidatesRow = d3.select("#ballotage-candidates-row");
+    let ballotageSection = d3.select("#ballotage-section");
 
     let resultsSection = d3.select("#election-results");
 
@@ -190,7 +191,7 @@
         .append("div")
         .attr("class", d => "candidate-card primary-candidate-card")
         .attr("id", d => "candidate-card-" + d.name)
-        .style("border-bottom",d => "7px solid" + parties.find(p => p.name == d.party).color);
+        .style("border-bottom", d => "7px solid" + parties.find(p => p.name == d.party).color);
         
         // Append image
         primaryCandidatesRow.append("img")
@@ -225,7 +226,7 @@
             
             let id = "primary-input"
             checkTotals(id, this);
-            updatePrimaryVotes(candidates);
+            updateVotes(candidates, "primary");
             updatePrimaryWinners(parties, candidates);
             updateCandidateNames(parties, candidates)
         });
@@ -252,10 +253,10 @@
         });
         
         initializeRetentionRow(candidates, parties, 'primary');
-        updatePrimaryVotes(candidates);
+        updateVotes(candidates, "primary");
         updatePrimaryWinners(parties, candidates);
 
-        d3.select("body") // or select another appropriate container
+        d3.select("body")
         .append("button")
         .attr("id", "reset-button")
         .attr("class", "reset-button")
@@ -283,20 +284,15 @@
         d3.select(window).on("load", loadData(parties, candidates));
     });
 
+    $(function () {
+      $('[data-toggle="popover"]').popover()
+    })
  
     window.onclick = function(event) {
         if (event.target == shareModal.node()) {
             closeShare();
         }
     }
-
-// if (!window.matchMedia('(pointer: coarse)').matches) {
-// 
-//     $('[data-toggle="popover"]').popover();
-// }
-$(function () {
-  $('[data-toggle="popover"]').popover()
-})
 
 function copyToClipboard() {
     let text = urlShare.text();
