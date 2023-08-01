@@ -1,16 +1,14 @@
 
-function createRetentionRow(candidate, partyColor, inputSection) {
+function createRetentionRow(candidate, partyColor, inputSection, nextElection="general") {
     inputSection
         .select(".retention-title")
         .html("")
         .append("div")
-        .html("Distribucion de los votos de <span style='color:" + partyColor + ";'>" + candidate + "</span> para la general");
+        .html("Distribucion de los votos de <span style='color:" + partyColor + ";'>" + candidate + "</span> para" + (nextElection == "general" ? " las elecciones generales" : " el ballotage"));
 
     inputSection.selectAll(".party-card").style("display", "none"); 
     inputSection.selectAll(".party-card-" + candidate).style("display", "block");
 
-    //select all retention-buttons in inPutSection with 
-    // background-color == #adebad and set it to def7de please 
     inputSection.selectAll(".retention-button")  
         .filter(function() { 
             return d3.select(this).style("background-color") !== "rgb(255, 235, 214);" 

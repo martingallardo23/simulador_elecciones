@@ -93,12 +93,17 @@ function updatePrimaryWinners(parties, candidates) {
     let first = parties[0];
     let second = parties[1];
 
+    parties.forEach(party => {
+        party.general_result = "";
+    });
+
     if (first.general_votes >= 45 || (first.general_votes >= 40 &&
         first.general_votes - second.general_votes >= 10)) {
         first.general_result = "winner";
     } else {
         first.general_result  = "ballotage";
         second.general_result = "ballotage";
+        initializeGeneralRetentionRow(parties, "general");
     }
 
     primaryWinners.sort((a, b) => {
@@ -106,7 +111,7 @@ function updatePrimaryWinners(parties, candidates) {
         let votesB = parties.find(p => p.name == b.party).general_votes;
         return votesB - votesA;
     });
-    // actualiza los candidatos y resultados de la general
+
     makeGeneralCandidates(parties); 
     updateGeneralResults(parties);
 
@@ -217,7 +222,7 @@ function initializeRetentionRow(candidates, parties, section = "primary") {
         .attr("class", "range-input " + section + "-retention-" + candidate.name)
         .style("background-color", d => d.color)
         .attr("id", d => section + "-retention-" + candidate.name + "-" + d.name)
-        //on touchstart stop propagation;
+
         .on("touchstart", function() {
             d3.event.stopPropagation();
         });
@@ -272,7 +277,8 @@ function makeGeneralCandidates(parties) {
         .select(".candidate-card-name") 
         .text(d => d.name);
 
-    let enterSelection = generalCandidateSelection.enter()
+    let enterSelection = generalCandidateSelection
+        .enter()
         .append("div")
         .attr("class", "candidate-card")
         .attr("id", d => "candidate-card-" + d.name)
@@ -295,6 +301,30 @@ function makeGeneralCandidates(parties) {
             let party = d.party;
             let votes = parties.find(p => p.name == party).general_votes;
             return votes + "%" ;
+        });
+
+    enterSelection.append("button")
+        .attr("class", "primary-retention-button retention-button")
+        .attr("title", d => "Retencion Generales " + d.name)
+        .text("Retencion")
+        .on("click", function (event, d) { 
+            let candidate = d.party;
+            let partyColor = parties.find(p => p.name == d.party).color;
+            
+            if (d3.select("#general-retention").classed("row-closed") ) {
+                createRetentionRow(candidate, partyColor, generalSection, "ballotage");
+                d3.select(this)
+                .style("background-color","#ADEBAD");
+                console.log("1")
+            } else if (d3.select(".party-card-" + candidate).style("display") == "none") {
+                createRetentionRow(candidate, partyColor, generalSection, "ballotage");
+                d3.select(this)
+                .style("background-color","#ADEBAD");
+                console.log("2")
+            } else {
+                closeRetentionRow(generalSection);
+                console.log("3");
+            }
         });
 }
 
@@ -383,4 +413,92 @@ function loadData(parties, candidates) {
             })            
             .catch(error => console.error('Error:', error));
     }
+}
+
+
+function initializeGeneralRetentionRow(parties, section = "general") {
+
+    let inputSection = d3.select("#" + section + "-section");
+
+    let ballotageParties = parties.filter(party => party.general_result == "ballotage");
+
+    inputSection
+    .select("#"+ section + "-retention-row")
+    .html("");
+
+    parties.forEach(party => {
+        let partyCards = inputSection
+        .selectAll(".retention-row")
+        .selectAll("#party-card")
+        .data(ballotageParties)
+        .enter()
+        .append("div")
+        .style("display", "none")
+        .attr("class", d => "party-card party-card-" + party.name)
+        .attr("id", d => "party-card-" + party.name + "-" + d.name);
+        
+        partyCards.append("div")
+        .attr("class", "party-card-name")
+        .text(d => d.name)
+        .style("color", d => d.color);
+
+        partyCards.append("div")
+        .attr("class", section + "-candidate-name-retention")
+        .text(d => d.candidate.name);
+        
+        partyCards.append("input")
+        .attr("type", "range")
+        .attr("min", 0)
+        .attr("max", 100)
+        .attr("value", d => {
+            if (ballotageParties.some(p => p.name == party.name)) {
+                return party.name == d.name ? 100 : 0;
+            } else {
+                return 50;
+            }
+        })
+        .attr("class", "range-input " + section + "-retention-" + party.name)
+        .style("background-color", d => d.color)
+        .attr("id", d => section + "-retention-" + party.name + "-" + d.name)
+        .on("touchstart", function() {
+            d3.event.stopPropagation();
+        });
+        
+        partyCards.append("div")
+        .attr("class", "retention-label")
+        .attr("id", d => section + "-retention-label-" + party.name + "-" + d.name)
+        .text( d => {          
+            if (ballotageParties.some(p => p.name == party.name)) {
+            return party.name == d.name ? "100%" : "0%";
+            } else {
+                return "50%";
+            }});
+        
+        partyCards.selectAll("." + section + "-retention-" + party.name)
+        .on("input", function() {
+            let total = checkTotals(section + "-retention-" + party.name, this);
+            console.log(total);
+
+            if (total != 100) {
+                generalCandidatesRow
+                .select("#candidate-card-" + party.candidate.name)
+                .select(".retention-button")
+                .classed( "retention-not-total", true);
+            } else 
+            {
+                generalCandidatesRow
+                .select("#candidate-card-" + party.candidate.name)
+                .select(".retention-button")
+                .attr('class', function() {
+                    return d3.select(this).attr('class') 
+                      .replace('retention-not-total', '');
+                  });
+            }
+
+            let idParty = d3.select(this).attr("id").split("-");
+            let partyID = idParty[idParty.length - 1];
+            d3.select("#" + section + "-retention-label-" + party.name + "-" + partyID).text(d3.select(this).property("value") + "%");
+
+        });
+    })
 }
