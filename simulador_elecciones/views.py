@@ -48,6 +48,36 @@ def index(request):
         }
     return render(request, "simulador_elecciones/index.html", context)
 
+
+def index_alt(request):
+    # get id parameter from request
+    context = {}
+    if 'id' in request.GET:
+        id = request.GET['id']
+        try:
+            user_input = UserInput.objects.get(id=id)
+
+            image_link = f"https://vercel-og-nextjs-omega-six.vercel.app/api/simulador?winner={user_input.winner}&round={user_input.round}&loser={user_input.loser}&percentage={user_input.percentage}"
+
+            context = {
+                'image_link': image_link,
+                'winner': user_input.winner,
+                'percentage': int(user_input.percentage),
+            }
+        except UserInput.DoesNotExist:
+            context = {
+                'image_link': "https://simulador-elecciones.s3.sa-east-1.amazonaws.com/thumbnail.png",
+                'winner': None,
+                'percentage': None,
+            }
+    else:
+        context = {
+            'image_link': "https://simulador-elecciones.s3.sa-east-1.amazonaws.com/thumbnail.png",
+            'winner': None,
+            'percentage': None,
+        }
+    return render(request, "simulador_elecciones/index_alt.html", context)
+
 def load(request):
     if 'id' in request.GET:
         id = request.GET['id']

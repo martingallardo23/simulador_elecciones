@@ -152,6 +152,10 @@ function updateGeneralResults(parties) {
             .select("#candidate-card-img-" + first.candidate.name)
             .style("filter", "grayscale(0%)");
 
+            generalCandidatesRow
+            .selectAll(".general-retention-button")
+            .style("display", "none")
+
             makeResultCard(parties, "first");
             
         } else {
@@ -166,11 +170,21 @@ function updateGeneralResults(parties) {
             .selectAll("#candidate-card-img-" + first.candidate.name + ", #candidate-card-img-" + second.candidate.name)
             .style("filter", "grayscale(0%)");
 
+            generalCandidatesRow
+            .selectAll(".retention-button")
+            .style("display", "flex");
+
+            initializeGeneralRetentionRow(parties)
+
+            makeBallotage(parties);
+
             makeResultCard(parties, "second");
           
         }
     } else {
         generalSection
+        .style("display", "none");
+        ballotageSection
         .style("display", "none");
         resultsSection
         .style("display", "none");
@@ -222,7 +236,6 @@ function initializeRetentionRow(candidates, parties, section = "primary") {
         .attr("class", "range-input " + section + "-retention-" + candidate.name)
         .style("background-color", d => d.color)
         .attr("id", d => section + "-retention-" + candidate.name + "-" + d.name)
-
         .on("touchstart", function() {
             d3.event.stopPropagation();
         });
@@ -304,8 +317,9 @@ function makeGeneralCandidates(parties) {
         });
 
     enterSelection.append("button")
-        .attr("class", "primary-retention-button retention-button")
+        .attr("class", "general-retention-button retention-button")
         .attr("title", d => "Retencion Generales " + d.name)
+        .attr("display", "none")
         .text("Retencion")
         .on("click", function (event, d) { 
             let candidate = d.party;
@@ -388,34 +402,6 @@ function makeResultCard(parties, round = "first") {
 
 }
 
-function loadData(parties, candidates) {
-    // Get the id from the URL
-    let urlParams = new URLSearchParams(window.location.search);
-    let id = urlParams.get('id');
-
-    if (id !== null) {
-        fetch('/load/?id=' + id)
-            .then(response => response.json())
-            .then(data => {
-                if (!data.error) {
-                    
-                d3.selectAll("input").each(function() {
-                    let inputId = d3.select(this).attr("id");  
-                    this.value = data[inputId];
-                    let id = inputId.split("-")[0] + "-" + inputId.split("-")[1];
-                    checkTotals(id, this);
-                    updateVotes(candidates, "primary");
-                    updatePrimaryWinners(parties, candidates);
-                    updateCandidateNames(parties, candidates)
-
-                });
-            }
-            })            
-            .catch(error => console.error('Error:', error));
-    }
-}
-
-
 function initializeGeneralRetentionRow(parties, section = "general") {
 
     let inputSection = d3.select("#" + section + "-section");
@@ -434,7 +420,7 @@ function initializeGeneralRetentionRow(parties, section = "general") {
         .enter()
         .append("div")
         .style("display", "none")
-        .attr("class", d => "party-card party-card-" + party.name)
+        .attr("class", "party-card party-card-" + party.name)
         .attr("id", d => "party-card-" + party.name + "-" + d.name);
         
         partyCards.append("div")
@@ -497,8 +483,74 @@ function initializeGeneralRetentionRow(parties, section = "general") {
 
             let idParty = d3.select(this).attr("id").split("-");
             let partyID = idParty[idParty.length - 1];
-            d3.select("#" + section + "-retention-label-" + party.name + "-" + partyID).text(d3.select(this).property("value") + "%");
+            d3.select("#" + section + "-retention-label-" + party.name + "-" + partyID).
+            text(d3.select(this).property("value") + "%");
 
         });
     })
+}
+
+function makeBallotage(parties) {
+    ballotageSection
+    .style("display", "block")
+    
+    getBallotageResults(parties) 
+
+    let ballotageParties = parties.filter(party => party.general_result == "ballotage")
+
+    let ballotageCandidateSection = d3.select("#ballotage-candidates-row")
+        .selectAll(".candidate-card")
+        .data(ballotageParties, d => d.candidate.name); 
+    
+    ballotageCandidateSection.exit().remove();
+
+    ballotageCandidateSection
+        .order() 
+        .select(".candidate-card-name") 
+        .text(d => d.candidate.name);
+
+    let enterSelection = ballotageCandidateSection
+        .enter()
+        .append("div")
+        .attr("class", "candidate-card")
+        .attr("id", d => "candidate-card-" + d.candidate.name)
+        .style("border-bottom", d => "5px solid" + d.color);
+
+    enterSelection.append("img")
+        .attr("class", "candidate-card-img")
+        .attr("id", d => "candidate-card-img-" + d.candidate.name)
+        .attr("style", "width: 100px; height: 100px;")
+        .attr("src", d => "./static/img/" + d.candidate.name + ".webp");
+
+    enterSelection.append("p")
+        .attr("class", "candidate-card-name")
+        .text(d => d.candidate.name);
+
+    enterSelection.append("div")
+        .attr("class", "ballotage-votes")
+        .attr("id", d => "ballotage-votes-" + d.name)
+        .text(d => {
+            let votes = d.ballotage_votes;
+            return votes + "%" ;
+        });
+
+}
+
+function getBallotageResults(parties) {
+    let ballotageParties = parties.filter(party => party.general_result == "ballotage") 
+    console.log(ballotageParties)
+
+    ballotageParties.forEach(balParty => {
+        let votes = 0;
+        parties.forEach(party => {
+
+            let retention = d3.select("#general-retention-row")
+            .select("#general-retention-" + party.name + "-" + balParty.name)
+            .property("value");
+
+            votes += party.general_votes * (retention / 100)
+        })
+        parties.find(partido => partido.name == balParty.name).ballotage_votes = votes;
+    })
+
 }

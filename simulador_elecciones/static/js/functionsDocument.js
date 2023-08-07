@@ -1,3 +1,31 @@
+
+function loadData(parties, candidates) {
+    // Get the id from the URL
+    let urlParams = new URLSearchParams(window.location.search);
+    let id = urlParams.get('id');
+
+    if (id !== null) {
+        fetch('/load/?id=' + id)
+            .then(response => response.json())
+            .then(data => {
+                if (!data.error) {
+                    
+                d3.selectAll("input").each(function() {
+                    let inputId = d3.select(this).attr("id");  
+                    this.value = data[inputId];
+                    let id = inputId.split("-")[0] + "-" + inputId.split("-")[1];
+                    checkTotals(id, this);
+                    updateVotes(candidates, "primary");
+                    updatePrimaryWinners(parties, candidates);
+                    updateCandidateNames(parties, candidates)
+
+                });
+            }
+            })            
+            .catch(error => console.error('Error:', error));
+    }
+}
+
 function hexToRGBA(hex, alpha) {
     var r = parseInt(hex.slice(1, 3), 16),
         g = parseInt(hex.slice(3, 5), 16),
