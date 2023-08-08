@@ -386,7 +386,7 @@ function makeResultCard(parties, round = "first") {
     let first = parties[0];
     let second = parties[1];
 
-    let woman = first.candidate.name == "Bullrich" || first.candidate.name == "Bregman";
+    let woman = first.candidate.name == "Bullrich" || first.candidate.name == "Bregman" || first.candidate.name == "Castañeira";
 
     resultsSection
     .select("#election-results-img")
@@ -405,7 +405,6 @@ function makeResultCard(parties, round = "first") {
     .select("#election-results-text-party")
     .text(first.name_long);
 
-    
     resultsSection
     .select("#election-results-card")
     .style("background-color", hexToRGBA(first.color, 0.4))

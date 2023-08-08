@@ -252,11 +252,12 @@ input {
 
 .general-background {
     border-top:1px solid #8b8b8b;
-    background: linear-gradient(135deg, #fff, #FFF5EB)
+    background: linear-gradient(135deg, #fff, #FFDDC2)
 }
 
-.ballotage-title {
-    background: linear-gradient(to right, #F0F9C8, #E1F391 );
+.ballotage-background {
+    border-top:1px solid #8b8b8b;
+    background: linear-gradient(to right, #fff, #D7EAD7 );
 }
 
 .election-results {

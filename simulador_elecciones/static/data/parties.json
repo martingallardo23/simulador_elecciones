@@ -28,5 +28,20 @@
         "name": "PyV",
         "name_long": "Principios y Valores",
         "color": "#3D5467"
+    },
+    {
+        "name": "MAS",
+        "name_long": "Nuevo MAS",
+        "color": "#FB3640"
+    },
+    {
+        "name": "PO",
+        "name_long": "Politica Obrera",
+        "color": "#B56B45"
+    },
+    {
+        "name": "MIJD",
+        "name_long": "Movimiento Izquierda Juventud Dignidad",
+        "color": "#FFFC47"
     }
 ]

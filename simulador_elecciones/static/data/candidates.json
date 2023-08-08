@@ -52,5 +52,23 @@
         "party": "PyV",
         "image": "./static/img/grabois.png",
         "primary_votes": 0
-    }   
+    },
+    {
+        "name": "Cuneo",
+        "party": "MIJD",
+        "image": "./static/img/grabois.png",
+        "primary_votes": 0
+    },
+    {
+        "name": "Castañeira",
+        "party": "MAS",
+        "image": "./static/img/castañeira.png",
+        "primary_votes": 0
+    },
+    {
+        "name": "Ramal",
+        "party": "PO",
+        "image": "./static/img/ramal.png",
+        "primary_votes": 0
+    }
 ]
