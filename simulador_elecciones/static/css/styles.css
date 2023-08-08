@@ -1,10 +1,36 @@
+/* For medium weight (500) */
+@font-face {
+    font-family: 'Zilla Slab';
+    src: url('/static/fonts/ZillaSlab-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+/* For medium weight (500) */
+@font-face {
+    font-family: 'Zilla Slab';
+    src: url('/static/fonts/ZillaSlab-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Zilla Slab';
+    src: url('/static/fonts/ZillaSlab-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
 body {
     font-family: 'Zilla Slab';
+    font-weight:500;
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items: center;
     background-color: #FFFDF5;
+}
+
+input {
+    font-weight:500;
 }
 
 .introduction {
@@ -138,7 +164,7 @@ body {
 
 .retention-title {
     font-size: 25px;
-    font-weight: 550;
+    font-weight: 500;
     text-align: left;
     margin: 0px;
     padding: 0px 20px;
@@ -318,8 +344,14 @@ body {
 }
 
 #election-results-text-winner {
-    font-weight:600;
-    font-size:32px;
+    font-weight: 700;
+    font-size:34px;
+}
+
+#election-results-text-party {
+    font-weight: 500;
+    font-size:20px;
+    margin-top:5px;
 }
 
 #election-results-text-percent {
