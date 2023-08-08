@@ -144,21 +144,23 @@ function updatePrimaryWinners(parties, candidates) {
 
 }
 
-function updateGeneralResults(parties, candidates = null, election = "primary") {
+function updateGeneralResults(parties, candidates=null, election = "primary") {
  
     let totalVotes = getWeightedTotals(candidates, election, parties);
 
-    generalCandidatesRow
-    .selectAll(".result-label")
-    .remove();
+    if (election == "primary") {
+        generalCandidatesRow
+        .selectAll(".result-label")
+        .remove();
 
-    generalCandidatesRow
-    .selectAll(".candidate-card")
-    .style("background-color", "white")
+        generalCandidatesRow
+        .selectAll(".candidate-card")
+        .style("background-color", "white")
 
-    generalCandidatesRow
-    .selectAll(".candidate-card-img")
-    .style("filter", "grayscale(100%)");
+        generalCandidatesRow
+        .selectAll(".candidate-card-img")
+        .style("filter", "grayscale(100%)");
+    }
 
     if (totalVotes == 100) {
         generalSection
@@ -191,6 +193,7 @@ function updateGeneralResults(parties, candidates = null, election = "primary") 
             makeResultCard(parties, "first");
             
         } else {
+            if (election == "primary") {
             generalCandidatesRow
             .selectAll("#candidate-card-" + first.candidate.name + ", #candidate-card-" + second.candidate.name)
             .style("background-color", "#E0E1E1")
@@ -205,6 +208,7 @@ function updateGeneralResults(parties, candidates = null, election = "primary") 
             generalCandidatesRow
             .selectAll(".retention-button")
             .style("display", "flex");
+            }
 
             makeBallotage(parties);
 
@@ -218,8 +222,7 @@ function updateGeneralResults(parties, candidates = null, election = "primary") 
         .style("display", "none");
         if (election == "primary") {
             closeRetentionRow(generalSection, "general");
-            generalSection
-            .style("display", "none");
+            generalSection.style("display", "none");
         }
     }
 }
