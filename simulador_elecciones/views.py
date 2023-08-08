@@ -103,7 +103,7 @@ def save(request):
             user_input.winner = results['winner']
             user_input.round = results['round']
             user_input.percentage = results['percentage']
-            loser = results['loser'].replace('./static/img/', '').replace('.png', '')
+            loser = results['loser']
             if loser == 'image-template':
                 user_input.loser = None
             else:

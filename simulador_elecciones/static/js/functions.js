@@ -437,7 +437,7 @@ function makeResultCard(parties, round = "first") {
         resultsSection
         .select("#election-results-img-loser")
         .style("display", "block")
-        .attr("src", "../static/img/" + second.candidate.name + ".webp");
+        .attr("src", "./static/img/" + second.candidate.name + ".webp");
     }
 
 }

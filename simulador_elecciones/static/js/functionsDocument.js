@@ -1,6 +1,5 @@
 
-function loadData(parties, candidates) {
-    // Get the id from the URL
+function loadData() {
     let urlParams = new URLSearchParams(window.location.search);
     let id = urlParams.get('id');
 
@@ -10,18 +9,13 @@ function loadData(parties, candidates) {
             .then(data => {
                 if (!data.error) {
                     
-                d3.selectAll("input").each(function() {
-                    let inputId = d3.select(this).attr("id");  
-                    this.value = data[inputId];
-                    let id = inputId.split("-")[0] + "-" + inputId.split("-")[1];
-                    checkTotals(id, this);
-                    updateVotes(candidates, "primary");
-                    updatePrimaryWinners(parties, candidates);
-                    updateCandidateNames(parties, candidates)
+                let keysSortedInReverse = Object.keys(data).sort().reverse()
 
-                });
-            }
-            })            
+                keysSortedInReverse.forEach(key => {
+                    d3.select("#" + key).property("value", data[key])
+                    .dispatch("input");
+                  });
+            }})            
             .catch(error => console.error('Error:', error));
     }
 }
@@ -43,6 +37,8 @@ function openShare() {
 
     let data = {};
 
+    allInputs = d3.selectAll("input");
+
     allInputs.each(function() {
         data[this.id] = this.value;
     });
@@ -51,7 +47,7 @@ function openShare() {
         "winner": d3.select("#election-results-text-winner").text(),
         "round": d3.select("#election-results-type-title").text() == "Primera ronda" ? "first" : "second",
         "percentage": d3.select("#election-results-text-percent").text().replace(/%/g, ""),
-        "loser": d3.select("#election-results-img-loser").attr("src"),
+        "loser": d3.select("#election-results-img-loser").attr("src").replace("./static/img/", "").replace(".webp", ""),
     }
 
     let imageURL = `https://vercel-og-nextjs-omega-six.vercel.app/api/simulador?winner=${resultsData.winner}&round=${resultsData.round}&loser=${resultsData.loser}&percentage=${resultsData.percentage}`
