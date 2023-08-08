@@ -437,37 +437,6 @@ body {
     background-position: center;
   }
 
-  .popover.fade {
-    transition: opacity 0.1s ease-in-out;
-  }
-
-  .popover {
-    border-radius: 10px;
-    border: 1px solid #8b8b8b;
-    padding: 10px 20px;
-    background-color: #FAFDED;
-  }
-
-    /* change the h3 attribute inside popover  to remove background*/
-    .popover-header {
-        background-color: transparent;
-        border:0px;
-        margin:0px;
-        padding:0px;
-    }
-
-    /*
-    .toast {
-        border-radius:10px;
-        box-shadow:0px;
-    }
-
-    .fade {
-        transition: opacity 0.1s ease-in-out !important;
-    }
-
-    */
-
     @media (max-width:1140px) {
         .election-results {
             flex-direction:column-reverse;

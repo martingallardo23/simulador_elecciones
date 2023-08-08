@@ -23,9 +23,6 @@
         <meta name="twitter:image" content="{{ image_link }}" />
         <meta name="twitter:image:src" content="{{ image_link }}" />
         <meta http-equiv="Permissions-Policy" content="interest-cohort=()">
-        
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js" integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -118,7 +115,7 @@
                     <div id="share-modal-img">
                         <img id="share-modal-img-img" src="./static/img/card-template.png">
                     </div>
-                    <div id="share-modal-link" tabindex="0" data-toggle="popover" title="Copiado!" onclick="copyToClipboard(event)" data-trigger="focus"  >
+                    <div id="share-modal-link" title="Copiado!" onclick="copyToClipboard(event)" >
                         <div id="url-to-copy">simuladorelecciones.com.ar</div>
                         <div id="share-modal-link-img"></div>
                     </div>
@@ -148,9 +145,7 @@
     </div>
 -->
       
-<script src="./static/js/jquery.min.js"></script>
 <script src="./static/js/d3.min.js"></script>
-
 <script src="./static/js/functionsDocument.js"></script>
 <script src="./static/js/functions.js"></script>
 <script src="./static/js/handleRetentionRow.js"></script>
@@ -281,10 +276,6 @@
         allInputs = d3.selectAll("input");
         d3.select(window).on("load", loadData());
     });
-
-    $(function () {
-      $('[data-toggle="popover"]').popover()
-    })
  
     window.onclick = function(event) {
         if (event.target == shareModal.node()) {
@@ -301,17 +292,18 @@ function copyToClipboard() {
 
     navigator.clipboard.writeText(text)
         .then(() => {
-            $(element).popover('show');  // Use the stored reference
+            let originalText = d3.select("#url-to-copy").text();
+            d3.select("#url-to-copy")
+            .text("Copiado!")
             setTimeout(function() {
-                $(element).popover('hide');  // Use the stored reference
-            }, 2000);
+                d3.select("#url-to-copy")
+                .text(originalText);
+            }, 1000)
         })
         .catch(err => {
             console.error('Could not copy text: ', err);
         });
 }
-
-
 </script>
 </body>
 </html>
