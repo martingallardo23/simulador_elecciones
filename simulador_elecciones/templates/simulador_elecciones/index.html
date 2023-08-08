@@ -30,10 +30,10 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Zilla+Slab:wght@500&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="./static/css/logo.css">
-        <link rel="stylesheet" href="./static/css/inputs.css">
-        <link rel="stylesheet" href="./static/css/styles.css">
-        <link rel="icon" href="./static/img/favicon.png" type="image/png" sizes="16x16">
+        <link rel="stylesheet" href="{% static 'css/logo.css' %}">
+        <link rel="stylesheet" href="{% static 'css/inputs.css' %}">
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        <link rel="icon" href="{% static 'img/favicon.png' %}" type="image/png" sizes="16x16">
         <script type="text/javascript">
             var candidatesURL = "{% static 'data/candidates.json' %}";
             var partiesURL = "{% static 'data/parties.json' %}";
@@ -215,36 +215,34 @@
             .attr("max", 100)
             .attr("value", 0)
             .attr("class", "primary-input")
-            .attr("id", d => "primary-input-" + d.name);
-
-        inputContainer.append("span")
-            .text("%")
-            .style("margin-left", "5px");
-
-        primaryCandidatesRow.selectAll(".primary-input")
-        .on("input", function() {
+            .attr("id", d => "primary-input-" + d.name)
+            .on("input", function() {
             
             let id = "primary-input"
             checkTotals(id, this);
             updateVotes(candidates, "primary");
             updatePrimaryWinners(parties, candidates);
             updateCandidateNames(parties, candidates)
-        });
+        });;
+
+        inputContainer.append("span")
+            .text("%")
+            .style("margin-left", "5px");
 
         primaryCandidatesRow.append("button")
         .attr("class", "primary-retention-button retention-button")
         .attr("title", d => "Retencion Primarias " + d.name)
-        .text("Retencion")
+        .text("Distrib.")
         .on("click", function (event, d) { 
             let candidate = d.name;
             let partyColor = parties.find(p => p.name == d.party).color;
             
             if (d3.select("#primary-retention").classed("row-closed") ) {
-                createRetentionRow(candidate, partyColor, primarySection);
+                createRetentionRow(candidate, partyColor, primarySection, "general", parties);
                 d3.select(this)
                 .style("background-color","#ADEBAD");
             } else if (d3.select(".party-card-" + candidate).style("display") == "none") {
-                createRetentionRow(candidate, partyColor, primarySection);
+                createRetentionRow(candidate, partyColor, primarySection, "general", parties);
                 d3.select(this)
                 .style("background-color","#ADEBAD");
             } else {

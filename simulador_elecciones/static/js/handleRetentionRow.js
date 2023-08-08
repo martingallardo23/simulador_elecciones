@@ -1,5 +1,5 @@
 
-function createRetentionRow(candidate, partyColor, inputSection, nextElection="general") {
+function createRetentionRow(candidate, partyColor, inputSection, nextElection="general", parties = null) {
     inputSection
         .select(".retention-title")
         .html("")
@@ -32,34 +32,60 @@ function createRetentionRow(candidate, partyColor, inputSection, nextElection="g
         .style("height", "auto")
         .attr("class", "retention row-open");
 
-    inputSection
-        .selectAll(".candidate-card")
-        .transition()
-        .duration(100)
-        .style("background-color", "white")
-        .style("outline", "0px");
-    
-    inputSection
-        .select("#candidate-card-" + candidate)
-        .transition()
-        .duration(100)
-        .style("background-color", "#F5FBDA")
-        .style("outline", "1px solid black");
+    let candidateSpecial = false
+
+    if (parties !== null) {
+        //filter parties with p.general_result either "winner" or "ballotage"
+        let specialParties = parties.filter(p =>  p.general_result == "winner" || p.general_result == "ballotage");
+        if (nextElection == "general") {
+            candidateSpecial = specialParties.map(p => p.candidate.name).includes(candidate);
+        } else {
+            candidateSpecial = specialParties.map(p => p.name).includes(candidate);
+        }
+    }
+
+    let inputName = nextElection == "general" ? candidate : parties.find(p => p.name == candidate).candidate.name;
+
+    inputSection.selectAll(".candidate-card")
+    .style("outline", "0px");
 
     inputSection
+    .select("#candidate-card-" + inputName)
+    .style("outline", "1px solid black");
+
+    let openCards = inputSection.selectAll(".candidate-card")
+    .filter(function() {
+        return d3.select(this).style("background-color") == "rgb(245, 251, 218)" 
+    })
+
+    openCards
+        .transition()
+        .duration(100)
+        .style("background-color", "white");
+
+    openCards
         .selectAll(".candidate-card-img")
         .transition()
         .duration(100)
         .style("filter", "grayscale(100%)");
+
+    if (nextElection == "general" || !candidateSpecial) {
+
+    inputSection
+        .select("#candidate-card-" + inputName)
+        .transition()
+        .duration(100)
+        .style("background-color", "#F5FBDA");
         
     inputSection
-        .select("#candidate-card-img-" + candidate)
+        .select("#candidate-card-img-" + inputName)
         .transition()
         .duration(100)
         .style("filter", "grayscale(0%)");
+    }
 }
 
-function closeRetentionRow(inputSection) {
+function closeRetentionRow(inputSection, election = "primary") {
 
     inputSection
         .select(".retention-title")
@@ -96,16 +122,41 @@ function closeRetentionRow(inputSection) {
     inputSection
         .selectAll(".party-card").style("display", "none"); 
 
-    inputSection
-        .selectAll(".candidate-card")
-        .transition()
-        .duration(100)
-        .style("background-color", "white")
-        .style("outline", "0px");
+    if (election == "primary") {
+        inputSection
+            .selectAll(".candidate-card")
+            .transition()
+            .duration(100)
+            .style("background-color", "white")
+            .style("outline", "0px");
+        
+        inputSection
+            .selectAll(".candidate-card-img")
+            .transition()
+            .duration(100)
+            .style("filter", "grayscale(100%)");
+    } else {
+        inputSection
+            .selectAll(".candidate-card")
+            .filter(function() {
+                return d3.select(this).style("outline") != "0px";
+                }
+            )
+            .style("outline", "0px")
 
-    inputSection
-        .selectAll(".candidate-card-img")
-        .transition()
-        .duration(100)
-        .style("filter", "grayscale(100%)");
+        inputSection
+            .selectAll(".candidate-card")
+            .filter(function() {
+                return d3.select(this).style("background-color") == "rgb(245, 251, 218)" 
+                }
+            )
+            .transition()
+            .duration(100)
+            .style("background-color", "white")
+            .select(".candidate-card-img")
+            .transition()
+            .duration(100)
+            .style("filter", "grayscale(100%)");
+            
+    }
 }

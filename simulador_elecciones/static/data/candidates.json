@@ -2,46 +2,55 @@
     {
         "name": "Bullrich",
         "party": "JxC",
-        "image": "./static/img/Bullrich.png"
+        "image": "./static/img/Bullrich.png",
+        "primary_votes": 0
     },
     {
         "name": "Larreta",
         "party": "JxC",
-        "image": "./static/img/larreta.png"
+        "image": "./static/img/larreta.png",
+        "primary_votes": 0
     },
     {
         "name": "Massa",
         "party": "UP",
-        "image": "./static/img/massa.png"
+        "image": "./static/img/massa.png",
+        "primary_votes": 0
     },
     {
         "name": "Grabois",
         "party": "UP",
-        "image": "./static/img/grabois.png"
+        "image": "./static/img/grabois.png",
+        "primary_votes": 0
     },
     {
         "name": "Milei",
         "party": "LLA",
-        "image": "./static/img/milei.png"
+        "image": "./static/img/milei.png",
+        "primary_votes": 0
     },
     {
         "name": "Schiaretti",
         "party": "CF",
-        "image": "./static/img/grabois.png"
+        "image": "./static/img/grabois.png",
+        "primary_votes": 0
     },
     {
         "name": "Bregman",
         "party": "FIT",
-        "image": "./static/img/grabois.png"
+        "image": "./static/img/grabois.png",
+        "primary_votes": 0
     },
     {
         "name": "Solano",
         "party": "FIT",
-        "image": "./static/img/grabois.png"
+        "image": "./static/img/grabois.png",
+        "primary_votes": 0
     },
     {
         "name": "Moreno",
         "party": "PyV",
-        "image": "./static/img/grabois.png"
+        "image": "./static/img/grabois.png",
+        "primary_votes": 0
     }   
 ]

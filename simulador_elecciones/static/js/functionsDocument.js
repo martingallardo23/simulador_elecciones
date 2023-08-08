@@ -94,3 +94,31 @@ function shareButton() {
             .catch((error) => console.log('Error sharing', error));
     }
 }
+
+function createResetButton() {
+
+    d3.select("body")
+    .append("button")
+    .attr("id", "reset-button")
+    .attr("class", "reset-button")
+    .attr("title", "Resetear")
+    .on("click", function() {
+        d3.selectAll(".primary-input")
+            .property("value", 0)
+            .dispatch("input");
+
+        d3.select("#primary-retention-row")
+            .selectAll(".range-input")
+            .property("value", function() {
+                let candidate = d3.select(this).attr("id").split("-")[2];
+                let party = d3.select(this).attr("id").split("-")[3];
+                let candidateData = candidates.find(c => c.name == candidate);
+                
+                return candidateData.party === party ? 100 : 0;
+            })
+            .dispatch("input");
+
+            closeRetentionRow(primarySection);
+    });
+
+}

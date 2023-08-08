@@ -168,6 +168,10 @@ body {
     display: none;
 }
 
+#ballotage-section {
+    display: none;
+}
+
 .general-votes {
     font-size: 30px;
     font-weight: 500;
