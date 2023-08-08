@@ -4,6 +4,7 @@
     src: url('/static/fonts/ZillaSlab-Medium.ttf') format('truetype');
     font-weight: 500;
     font-style: normal;
+    font-display: swap
 }
 /* For medium weight (500) */
 @font-face {
@@ -11,12 +12,14 @@
     src: url('/static/fonts/ZillaSlab-SemiBold.ttf') format('truetype');
     font-weight: 600;
     font-style: normal;
+    font-display: swap
 }
 @font-face {
     font-family: 'Zilla Slab';
     src: url('/static/fonts/ZillaSlab-Bold.ttf') format('truetype');
     font-weight: 700;
     font-style: normal;
+    font-display: swap
 }
 
 body {
