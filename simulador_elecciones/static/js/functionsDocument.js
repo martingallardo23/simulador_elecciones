@@ -75,7 +75,7 @@ function openShare() {
         "loser": d3.select("#election-results-img-loser").attr("src").replace("./static/img/", "").replace(".webp", ""),
     }
 
-    let imageURL = `https://vercel-og-nextjs-omega-six.vercel.app/api/simulador?winner=${resultsData.winner}&round=${resultsData.round}&loser=${resultsData.loser}&percentage=${resultsData.percentage}`
+    let imageURL = `https://vercel-og-nextjs-omega-six.vercel.app/api/simulador?winner=${resultsData.winner}&round=${resultsData.round}&loser=${resultsData.loser}&percentage=${resultsData.percentage}?cache=1`
     shareModal.select("#share-modal-img-img").attr("src", imageURL);
 
     fetch('/save/', {
