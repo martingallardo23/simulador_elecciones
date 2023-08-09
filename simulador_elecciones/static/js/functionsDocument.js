@@ -72,6 +72,9 @@ function openShare() {
     }).then(data => {
         urlShare.text("simuladorelecciones.vercel.app/?id=" + data.id);
         dataId = data.id;
+
+        d3.select("#share-modal-twitter")
+        .attr("href", "https://twitter.com/intent/tweet?text=Va mi predicción para el domingo&url=https://simuladorelecciones.vercel.app/?id=" + data.id)
     })
     .catch(error => console.log(error));
 }
