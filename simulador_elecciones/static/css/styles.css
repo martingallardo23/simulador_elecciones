@@ -399,6 +399,38 @@ input {
     background-color: #D1F0D1;
 }
 
+#share-modal-text {
+    display:flex; flex-direction:row; align-items:center; justify-content:center;
+}
+
+#share-modal-twitter {
+    padding:6px 12px;
+    border-radius:10px;
+    background-color: #1DA1F2;
+    color: white;
+    margin:5px;
+    border:1px solid #333;
+    cursor:pointer;
+    text-decoration: none;
+    transition: 0.1s ease-in-out;
+}
+
+#share-modal-twitter:hover {
+    background-color: #1A91DA;
+}
+
+#share-modal-title {
+    padding:6px 12px;
+    border-radius:10px;
+    background-color: #c7dacf;
+    margin:5px;
+    border:1px solid #333;
+    transition: 0.1s ease-in-out;
+}
+
+#share-modal-title:hover {
+    background-color: #b3d2c1;
+}
 
 .modal {
     display: none; /* Hidden by default */

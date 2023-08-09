@@ -113,12 +113,13 @@
                         <img id="share-modal-img-img" src="./static/img/card-template.png">
                     </div>
                     <div id="share-modal-link" title="Copiado!" onclick="copyToClipboard(event)" >
-                        <div id="url-to-copy">simuladorelecciones.com.ar</div>
+                        <div id="url-to-copy">simuladorelecciones.vercel.app</div>
                         <div id="share-modal-link-img"></div>
                     </div>
-                    
+                    <div id="share-modal-text">
+                    <a id="share-modal-twitter" href="https://twitter.com/intent/tweet?text=Hello%20world">Twittear</a>
                     <button id="share-modal-title" onclick="shareButton()" title="Compartir">Compartir</button>
-                    <div id="share-modal-text"></div>
+                    </div>
                 </div>
         </div>
 
@@ -130,17 +131,11 @@
             <div id="circle2" class="circle"></div>
         </div>
         <div id="logo-text">
-        <a href="https://simuladorelecciones-2a010e363c38.herokuapp.com" style="color:black;">Simulador de Elecciones</a>
+        <a href="https://simuladorelecciones.vercel.app/" style="color:black;">Simulador de Elecciones</a>
         </div>
     </div>
-    <!--<div style="display:flex; justify-content:center; align-items:center; text-align:center;">
-    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="z-index:9999; position:fixed; bottom:20px; align-self:center; display:none;">
-        <div class="toast-body">
-          Link copiado al portapapeles
-        </div>
-      </div>
-    </div>
--->
+
+    <button id="reset-button" class="reset-button" title="Resetear"></button>
       
 <script src="./static/js/d3.min.js"></script>
 <script src="./static/js/functionsDocument.js"></script>
@@ -169,6 +164,7 @@
 
     let urlShare = d3.select("#url-to-copy");
     
+    let dataId;
     let allInputs;
 
     Promise.all([
@@ -245,18 +241,46 @@
         updateVotes(candidates, "primary");
         updatePrimaryWinners(parties, candidates);
 
-        d3.select("body")
-        .append("button")
-        .attr("id", "reset-button")
-        .attr("class", "reset-button")
-        .attr("title", "Resetear")
-        .on("click", function() {
-            d3.selectAll(".primary-input")
+        d3.select("#reset-button")
+            .on("click", function() {
+                
+                d3.selectAll(".primary-input")
+                .property("value", 0)
+                .dispatch("input");
+                
+                generalSection.style("display", "none");
+                closeRetentionRow(primarySection);
+                
+                d3.select("#primary-retention-row")
+                .selectAll(".range-input")
+                .property("value", function() {
+                        let candidate = d3.select(this).attr("id").split("-")[2];
+                        let party = d3.select(this).attr("id").split("-")[3];
+                        let candidateData = candidates.find(c => c.name == candidate);
+                        console.log("a")
+                        
+                        return candidateData.party === party ? 100 : 0;
+                    })
+                .dispatch("input");
+            });
+
+        d3.select(window).on("load", loadData());
+    });
+ 
+    window.onclick = function(event) {
+        if (event.target == shareModal.node()) {
+            closeShare();
+        }
+    }
+
+function resetInputs() {
+    d3.selectAll(".primary-input")
                 .property("value", 0)
                 .dispatch("input");
 
             closeRetentionRow(primarySection);
 
+            console.log("v")
             d3.select("#primary-retention-row")
                 .selectAll(".range-input")
                 .property("value", function() {
@@ -268,17 +292,7 @@
                 })
                 .dispatch("input");
 
-        });
-
-        allInputs = d3.selectAll("input");
-        d3.select(window).on("load", loadData());
-    });
- 
-    window.onclick = function(event) {
-        if (event.target == shareModal.node()) {
-            closeShare();
-        }
-    }
+}
 
 function copyToClipboard() {
     let text = urlShare.text();

@@ -70,7 +70,8 @@ function openShare() {
             throw new Error('Failed to save data');
         }
     }).then(data => {
-        urlShare.text("simuladorelecciones.com.ar/?id=" + data.id);
+        urlShare.text("simuladorelecciones.vercel.app/?id=" + data.id);
+        dataId = data.id;
     })
     .catch(error => console.log(error));
 }
@@ -82,9 +83,9 @@ function closeShare() {
 function shareButton() {
     if (navigator.share) {
         navigator.share({
-            title: 'Simulador de Elecciones',
-            text: 'Hacé tu predicción de las elecciones 2023',
-            url: 'https://simulador-elecciones-vercel.vercel.app/',
+            title: 'Simulador de Elecciones Argentina 2023',
+            text: 'Simulador de Elecciones Argentina 2023',
+            url: 'https://simuladorelecciones.vercel.app/?id=' + dataId,
         })
             .then(() => console.log('Successful share'))
             .catch((error) => console.log('Error sharing', error));
