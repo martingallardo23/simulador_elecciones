@@ -32,7 +32,7 @@
     {
         "name": "MAS",
         "name_long": "Nuevo MAS",
-        "color": "#FB3640"
+        "color": "#CC0029"
     },
     {
         "name": "PO",
@@ -42,6 +42,6 @@
     {
         "name": "MIJD",
         "name_long": "Movimiento Izquierda Juventud Dignidad",
-        "color": "#FFFC47"
+        "color": "#EFEA5A"
     }
 ]
