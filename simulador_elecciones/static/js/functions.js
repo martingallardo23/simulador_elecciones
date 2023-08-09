@@ -365,15 +365,12 @@ function makeGeneralCandidates(parties) {
                 createRetentionRow(candidate, partyColor, generalSection, "ballotage", parties);
                 d3.select(this)
                 .style("background-color","#ADEBAD");
-                console.log("1")
             } else if (d3.select(".party-card-" + candidate).style("display") == "none") {
                 createRetentionRow(candidate, partyColor, generalSection, "ballotage", parties);
                 d3.select(this)
                 .style("background-color","#ADEBAD");
-                console.log("2")
             } else {
                 closeRetentionRow(generalSection, "ballotage");
-                console.log("3");
             }
         });
 }

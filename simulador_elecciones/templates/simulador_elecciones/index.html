@@ -257,7 +257,6 @@
                         let candidate = d3.select(this).attr("id").split("-")[2];
                         let party = d3.select(this).attr("id").split("-")[3];
                         let candidateData = candidates.find(c => c.name == candidate);
-                        console.log("a")
                         
                         return candidateData.party === party ? 100 : 0;
                     })
@@ -272,27 +271,6 @@
             closeShare();
         }
     }
-
-function resetInputs() {
-    d3.selectAll(".primary-input")
-                .property("value", 0)
-                .dispatch("input");
-
-            closeRetentionRow(primarySection);
-
-            console.log("v")
-            d3.select("#primary-retention-row")
-                .selectAll(".range-input")
-                .property("value", function() {
-                    let candidate = d3.select(this).attr("id").split("-")[2];
-                    let party = d3.select(this).attr("id").split("-")[3];
-                    let candidateData = candidates.find(c => c.name == candidate);
-                    
-                    return candidateData.party === party ? 100 : 0;
-                })
-                .dispatch("input");
-
-}
 
 function copyToClipboard() {
     let text = urlShare.text();
