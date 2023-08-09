@@ -203,13 +203,16 @@
             .attr("class", "primary-input")
             .attr("id", d => "primary-input-" + d.name)
             .on("input", function() {
-            
-            let id = "primary-input"
-            checkTotals(id, this);
-            updateVotes(candidates, "primary");
-            updatePrimaryWinners(parties, candidates);
-            updateCandidateNames(parties, candidates)
-        });;
+                let currentElement = d3.select(this);
+                let currentValue = currentElement.property("value");
+                currentElement.property("value", Number(currentValue))
+                
+                let id = "primary-input"
+                checkTotals(id, this);
+                updateVotes(candidates, "primary");
+                updatePrimaryWinners(parties, candidates);
+                updateCandidateNames(parties, candidates)
+            });;
 
         inputContainer.append("span")
             .text("%")
