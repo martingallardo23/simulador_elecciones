@@ -244,23 +244,52 @@
         d3.select("#reset-button")
             .on("click", function() {
                 
-                d3.selectAll(".primary-input")
-                .property("value", 0)
-                .dispatch("input");
-                
-                generalSection.style("display", "none");
+                let allPrimaryInputs = d3.selectAll(".primary-input")
+                    .property("value", 0);
+
+                allPrimaryInputs.filter((d, i, nodes) => i === nodes.length - 1)
+                    .dispatch("input");
+
                 closeRetentionRow(primarySection);
                 
-                d3.select("#primary-retention-row")
-                .selectAll(".range-input")
-                .property("value", function() {
-                        let candidate = d3.select(this).attr("id").split("-")[2];
-                        let party = d3.select(this).attr("id").split("-")[3];
-                        let candidateData = candidates.find(c => c.name == candidate);
-                        
-                        return candidateData.party === party ? 100 : 0;
-                    })
-                .dispatch("input");
+                let primaryRetentionRow = d3.select("#primary-retention-row");
+
+                primaryRetentionRow.selectAll(".range-input")
+                .each(function() {
+                    let currentElement = d3.select(this);
+                    let currentValue = currentElement.property("value");
+
+                    let candidate = currentElement.attr("id").split("-")[2];
+                    let party = currentElement.attr("id").split("-")[3];
+                    let candidateData = candidates.find(c => c.name == candidate);
+                    
+                    if (candidateData.party !== party) {
+                    let newValue = 0;
+                    if (currentValue != newValue) {
+                        currentElement.property("value", newValue);
+                        currentElement.dispatch("input");
+                    }
+                    }
+                });
+
+                primaryRetentionRow.selectAll(".range-input")
+                .each(function() {
+                    let currentElement = d3.select(this);
+                    let currentValue = currentElement.property("value");
+
+                    let candidate = currentElement.attr("id").split("-")[2];
+                    let party = currentElement.attr("id").split("-")[3];
+                    let candidateData = candidates.find(c => c.name == candidate);
+
+                    if (candidateData.party === party) {
+                    let newValue = 100;
+                    if (currentValue != newValue) {
+                        currentElement.property("value", newValue);
+                        currentElement.dispatch("input");
+                    }
+                    }
+                });
+
             });
 
         d3.select(window).on("load", loadData());
