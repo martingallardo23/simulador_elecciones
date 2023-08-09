@@ -9,11 +9,36 @@ function loadData() {
             .then(data => {
                 if (!data.error) {
                     
-                let keysSortedInReverse = Object.keys(data).sort().reverse()
+                    const groupByPrefix = (obj) => {
+                        return {
+                            "primary-input": [],
+                            "primary-retention": [],
+                            "general-retention": []
+                        };
+                    };
 
-                keysSortedInReverse.forEach(key => {
-                    d3.select("#" + key).property("value", data[key])
-                    .dispatch("input");
+                    let grouped = Object.keys(data).reduce((acc, key) => {
+                        if (key.startsWith('primary-input')) {
+                            acc['primary-input'].push(key);
+                        } else if (key.startsWith('primary-retention')) {
+                            acc['primary-retention'].push(key);
+                        } else if (key.startsWith('general-retention')) {
+                            acc['general-retention'].push(key);
+                        }
+                        return acc;
+                    }, groupByPrefix(data));
+                    
+                    Object.keys(grouped).forEach(group => {
+                        grouped[group].sort((a, b) => {
+                            return data[a] - data[b]; 
+                        });
+                    });
+
+                    let finalOrder = [].concat(grouped["primary-input"], grouped["primary-retention"], grouped["general-retention"]);
+
+                    finalOrder.forEach(key => {
+                        d3.select("#" + key).property("value", data[key])
+                        .dispatch("input");
                   });
             }})            
             .catch(error => console.error('Error:', error));
