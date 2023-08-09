@@ -99,7 +99,7 @@ function openShare() {
         dataId = data.id;
 
         d3.select("#share-modal-twitter")
-        .attr("href", "https://twitter.com/intent/tweet?text=Va mi predicción para el domingo&url=https://simuladorelecciones.vercel.app/?id=" + data.id)
+        .attr("href", "https://twitter.com/intent/tweet?text=Mi predicción para estas elecciones&url=https://simuladorelecciones.vercel.app/?id=" + data.id)
     })
     .catch(error => console.log(error));
 }
@@ -112,7 +112,7 @@ function shareButton() {
     if (navigator.share) {
         navigator.share({
             title: 'Simulador de Elecciones Argentina 2023',
-            text: 'Simulador de Elecciones Argentina 2023',
+            text: 'Mi predicción para estas elecciones',
             url: 'https://simuladorelecciones.vercel.app/?id=' + dataId,
         })
             .then(() => console.log('Successful share'))
