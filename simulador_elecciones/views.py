@@ -27,7 +27,7 @@ def index(request):
         try:
             user_input = UserInput.objects.get(id=id)
 
-            image_link = f"https://vercel-og-nextjs-omega-six.vercel.app/api/simulador?winner={user_input.winner}&round={user_input.round}&loser={user_input.loser}&percentage={user_input.percentage}?cache=1"
+            image_link = f"https://vercel-og-nextjs-omega-six.vercel.app/api/simulador?winner={user_input.winner}&round={user_input.round}&loser={user_input.loser}&percentage={user_input.percentage}&cache=1"
 
             context = {
                 'image_link': image_link,
