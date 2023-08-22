@@ -104,7 +104,6 @@
                 </div>
             </div>
 
-            <!--create modal for openshare()-->
             <div id="share-modal" class="modal">
                 <div class="modal-content">
                     <span id="close-modal-btn" class="close" onclick="closeShare()">&times;</span>
@@ -179,7 +178,6 @@
         .attr("id", d => "candidate-card-" + d.name)
         .style("border-bottom", d => "7px solid" + parties.find(p => p.name == d.party).color);
         
-        // Append image
         primaryCandidatesRow.append("img")
         .attr("class", "candidate-card-img")
         .attr("id", d => "candidate-card-img-" + d.name)
@@ -324,11 +322,6 @@ function copyToClipboard() {
             console.error('Could not copy text: ', err);
         });
 }
-
-// randomize experience
-// add whisker test and tasks
-// standardize instructions for the tasks
-
 
 </script>
 </body>

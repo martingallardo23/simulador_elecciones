@@ -19,12 +19,10 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from .views import index, load, save, index_alt
-
+from .views import index, load, save
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", index, name="index"),
-    path("index_alt/", index_alt, name="index_alt"),
     path("load/", load, name="load"),
     path("save/", save, name="save"),
 ]

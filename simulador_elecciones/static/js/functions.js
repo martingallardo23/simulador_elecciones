@@ -38,6 +38,7 @@ function getTotals (id) {
 
 function checkTotals(id, inputElement) {
     var idName = "." + id;
+
     let total = getTotals(idName);
 
     let maxPossibleValue = 100 - (total - d3.select(inputElement).property("value"));
@@ -84,9 +85,7 @@ function updateVotes(candidates, election = "primary") {
 }
 
 function getVotes(party, candidates, election = "primary") {
-    /*
-    Calcula los votos para el partido dado
-    */
+
     let votes = 0;
     candidates.forEach(candidate => {
         let primaryVotes = candidate.votes;
@@ -576,9 +575,6 @@ function makeBallotage(parties) {
             let votes = d.ballotage_votes;
             return votes + "%" ;
         });
-
-    
-
 }
 
 function getBallotageResults(parties) {

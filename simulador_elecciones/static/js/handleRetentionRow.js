@@ -1,5 +1,6 @@
 
 function createRetentionRow(candidate, partyColor, inputSection, nextElection="general", parties = null) {
+        
     inputSection
         .select(".retention-title")
         .html("")
@@ -35,7 +36,7 @@ function createRetentionRow(candidate, partyColor, inputSection, nextElection="g
     let candidateSpecial = false
 
     if (parties !== null) {
-        //filter parties with p.general_result either "winner" or "ballotage"
+
         let specialParties = parties.filter(p =>  p.general_result == "winner" || p.general_result == "ballotage");
         if (nextElection == "general") {
             candidateSpecial = specialParties.map(p => p.candidate.name).includes(candidate);
